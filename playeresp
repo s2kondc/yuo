@@ -1,0 +1,72 @@
+Callback = function()
+            local L = tick()
+            _G.TeamLine = true
+            local g = game:GetService("Players")
+            local M = game:GetService("RunService")
+            local N = g.LocalPlayer
+            local O = workspace.CurrentCamera
+            function esp(P)
+                local Q = Drawing.new("Line")
+                Q.Color = Color3.new(1, 1, 1)
+                Q.Visible = false
+                Q.Thickness = 1
+                Q.Transparency = 1
+                local R = Drawing.new("Text")
+                R.Text = P.Name
+                R.Color = Color3.new(1, 1, 1)
+                R.Outline = true
+                R.OutlineColor = Color3.new(0, 0, 0)
+                R.Size = 20
+                R.Visible = false
+                M.RenderStepped:Connect(
+                    function()
+                        if P ~= N and P.Character ~= nil and P.Character:FindFirstChild("HumanoidRootPart") then
+                            local S = P.Character:FindFirstChild("Head").Position
+                            local T = P.Character.PrimaryPart.Position
+                            local U, V = O:WorldToViewportPoint(S)
+                            local W, X = O:WorldToViewportPoint(T)
+                            if X then
+                                Q.From = Vector2.new(O.ViewportSize.X / 2, O.ViewportSize.Y)
+                                Q.To = Vector2.new(W.X, W.Y)
+                                R.Position = Vector2.new(U.X - 2, U.Y)
+                                Q.Visible = true
+                                R.Visible = true
+                                if P.TeamColor then
+                                    Q.Color = P.TeamColor.Color
+                                    R.Color = P.TeamColor.Color
+                                else
+                                    Q.Color = Color3.new(1, 1, 1)
+                                    R.Color = Color3.new(1, 1, 1)
+                                end
+                                if not _G.TeamLine then
+                                    if P.TeamColor == N.TeamColor then
+                                        Q.Visible = false
+                                        R.Visible = false
+                                    else
+                                        Q.Visible = true
+                                        R.Visible = true
+                                    end
+                                end
+                            else
+                                Q.Visible = false
+                                R.Visible = false
+                            end
+                        end
+                    end
+                )
+            end
+            for m, n in pairs(g:GetChildren()) do
+                esp(n)
+            end
+            g.PlayerAdded:Connect(
+                function(n)
+                    n.CharacterAdded:Connect(
+                        function()
+                            esp(n)
+                        end
+                    )
+                end
+            )
+        end
+    }
+)
