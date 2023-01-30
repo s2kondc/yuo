@@ -1,0 +1,9 @@
+for i,v in next, getgc(true) do
+  if type(v) == "table" and rawget(v, "MaxSpeed") then
+     rawset(v, "TurretFireRate", 0.3) -- turret firerate on all vehicles
+     rawset(v, "MaxSpeed", 300) -- speed
+     rawset(v, "HoverHitWater", true) -- dont change
+     rawset(v, "CanTurnHoverMode", tru) -- can hover (Y is the keybind)
+     rawset(v, "StartTime", 0) --vehicle start time
+  end
+end
