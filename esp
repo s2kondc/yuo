@@ -1,0 +1,142 @@
+task.spawn(
+                function()
+                    while task.wait(5) do
+                        if not _G.Settings.autorob then
+                            break
+                        end
+                        wait()
+                        game.Players.LocalPlayer.PlayerGui.SpawnGUI.Enabled = false
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Parent = nil
+                        for m, n in pairs(getnilinstances()) do
+                            if n.Name == "HumanoidRootPart" then
+                                n.Parent = game.Players.LocalPlayer.Character
+                            end
+                        end
+                        wait(0.8)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Position =
+                            Vector3.new(2039.42, 26.42, 425.82)
+                        for m, n in pairs(game:GetService("Workspace").ObjectSelection:GetDescendants()) do
+                            if
+                                n.Name == "Cash" and n:IsA("MeshPart") or n.Name == "Steal" and n:IsA("Part") or
+                                    n.Name == "SmashCash" and n:IsA("Part") or
+                                    n.Name == "ATM" and n:IsA("Part") or
+                                    n.Name == "StealTV" and n:IsA("Part") or
+                                    n.Name == "StealPhone" and n:Isa("Part") or 
+                                    n.Name == "Smash And Grab" and n:IsA("Part") or
+                                    n.Name == "Grab" and n:IsA("Part") or
+                                    n.Name == "Safe" and n:IsA("Part") or
+                                    n.Name == "Phone" and n:IsA("Part") or
+                                    n.Name == "Luggage" and n:IsA("Part") or
+                                    n.Name == "TipJar" and n:IsA("Part") or
+                                    n.Name == "DiamondBox" and n:IsA("Part") or
+                                    n.Name == "CashRegister" and n:IsA("Part")or
+                                    n.Name == "Open" and n:IsA("Part")
+                             then
+                                wait(0.01)
+                                n:FindFirstChildOfClass("Script").Event:FireServer()
+                            end
+                        end
+                        wait(1)
+                        local y = game.PlaceId
+                        local z = {}
+                        local A = ""
+                        local B = os.date("!*t").hour
+                        local C = false
+                        local D =
+                            pcall(
+                            function()
+                                z = game:GetService("HttpService"):JSONDecode(readfile("NotSameServers.json"))
+                            end
+                        )
+                        if not D then
+                            table.insert(z, B)
+                            writefile("NotSameServers.json", game:GetService("HttpService"):JSONEncode(z))
+                        end
+                        function TPReturner()
+                            local E
+                            if A == "" then
+                                E =
+                                    game.HttpService:JSONDecode(
+                                    game:HttpGet(
+                                        "https://games.roblox.com/v1/games/" ..
+                                            y .. "/servers/Public?sortOrder=Asc&limit=100"
+                                    )
+                                )
+                            else
+                                E =
+                                    game.HttpService:JSONDecode(
+                                    game:HttpGet(
+                                        "https://games.roblox.com/v1/games/" ..
+                                            y .. "/servers/Public?sortOrder=Asc&limit=100&cursor=" .. A
+                                    )
+                                )
+                            end
+                            local F = ""
+                            if E.nextPageCursor and E.nextPageCursor ~= "null" and E.nextPageCursor ~= nil then
+                                A = E.nextPageCursor
+                            end
+                            local G = 0
+                            for m, n in pairs(E.data) do
+                                local H = true
+                                F = tostring(n.id)
+                                if tonumber(n.maxPlayers) > tonumber(n.playing) then
+                                    for I, J in pairs(z) do
+                                        if G ~= 0 then
+                                            if F == tostring(J) then
+                                                H = false
+                                            end
+                                        else
+                                            if tonumber(B) ~= tonumber(J) then
+                                                local K =
+                                                    pcall(
+                                                    function()
+                                                        delfile("NotSameServers.json")
+                                                        z = {}
+                                                        table.insert(z, B)
+                                                    end
+                                                )
+                                            end
+                                        end
+                                        G = G + 1
+                                    end
+                                    if H == true then
+                                        table.insert(z, F)
+                                        wait()
+                                        pcall(
+                                            function()
+                                                writefile(
+                                                    "NotSameServers.json",
+                                                    game:GetService("HttpService"):JSONEncode(z)
+                                                )
+                                                wait()
+                                                game:GetService("TeleportService"):TeleportToPlaceInstance(
+                                                    y,
+                                                    F,
+                                                    game.Players.LocalPlayer
+                                                )
+                                            end
+                                        )
+                                        wait(4)
+                                    end
+                                end
+                            end
+                        end
+                        function Teleport()
+                            while wait() do
+                                pcall(
+                                    function()
+                                        TPReturner()
+                                        if A ~= "" then
+                                            TPReturner()
+                                        end
+                                    end
+                                )
+                            end
+                        end
+                        Teleport()
+                    end
+                end
+            )
+        end
+    }
+)
