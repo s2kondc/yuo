@@ -1,4 +1,4 @@
-task.spawn(
+
                 function()
                     while task.wait(5) do
                         if not _G.Settings.autorob then
