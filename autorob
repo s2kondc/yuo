@@ -1,0 +1,38 @@
+task.spawn(
+                function()
+                    while task.wait(5) do
+                        if not _G.Settings.autorob then
+                            break
+                        end
+                        wait()
+                        game.Players.LocalPlayer.PlayerGui.SpawnGUI.Enabled = false
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Parent = nil
+                        for m, n in pairs(getnilinstances()) do
+                            if n.Name == "HumanoidRootPart" then
+                                n.Parent = game.Players.LocalPlayer.Character
+                            end
+                        end
+                        wait(0.8)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Position =
+                            Vector3.new(2039.42, 26.42, 425.82)
+                        for m, n in pairs(game:GetService("Workspace").ObjectSelection:GetDescendants()) do
+                            if
+                                n.Name == "Cash" and n:IsA("MeshPart") or n.Name == "Steal" and n:IsA("Part") or
+                                    n.Name == "SmashCash" and n:IsA("Part") or
+                                    n.Name == "ATM" and n:IsA("Part") or
+                                    n.Name == "StealTV" and n:IsA("Part") or
+                                    n.Name == "StealPhone" and n:Isa("Part") or 
+                                    n.Name == "Smash And Grab" and n:IsA("Part") or
+                                    n.Name == "Grab" and n:IsA("Part") or
+                                    n.Name == "Safe" and n:IsA("Part") or
+                                    n.Name == "Phone" and n:IsA("Part") or
+                                    n.Name == "Luggage" and n:IsA("Part") or
+                                    n.Name == "TipJar" and n:IsA("Part") or
+                                    n.Name == "DiamondBox" and n:IsA("Part") or
+                                    n.Name == "CashRegister" and n:IsA("Part")or
+                                    n.Name == "Open" and n:IsA("Part")
+                             then
+                                wait(0.01)
+                                n:FindFirstChildOfClass("Script").Event:FireServer()
+                            end
+                        end
